@@ -11,8 +11,6 @@
 
 
 function saveVideo(mainDir, imageDir, expName)
-%% Initialize and find all image file names
-
     %This depends on where you save your image folders **Subject to Change**
     startDir = fullfile('/Users/adam2392/Desktop');
 
@@ -31,9 +29,7 @@ function saveVideo(mainDir, imageDir, expName)
         fileNames(i) = imageNames(i);
     end
     sortedImageNames = sortrows(fileNames);             %sort the names
- 
-%% Calculate Frame Rate of the Saved Images
-
+    
     %find the timestamps of the saved images ->fps-> save into video with same fps
     timeStamp = strfind(sortedImageNames{1}, 'c1');
     if (isempty(timeStamp))
@@ -71,7 +67,8 @@ function saveVideo(mainDir, imageDir, expName)
             temp04 = sortedImageNames{end}(i);
             temp05 = sortedImageNames{end}(i+1);
             temp06 = sortedImageNames{end}(i+2);
-            lastFrame(k) = str2double(strcat(temp04, temp05, temp06));   
+            lastFrame(k) = str2double(strcat(temp04, temp05, temp06));
+            k=k+1;   
         end  
         j = j+1;
     end
@@ -83,19 +80,17 @@ function saveVideo(mainDir, imageDir, expName)
     ms = (lastFrame(3)-firstFrame(3))/1000;
     totalTime = min+sec+ms;     %calculates total time of the image capture session
     
-    fps = length(sortedImageNames)/totalTime;   %calculates fps
+    fps = totalTime/length(sortedImageNames);   %calculates fps
     
-%% Save into a Video File Section
-
-    %setup name and location of video file
+    
+    %Construct a VideoWriter object, which creates a motion-jpeg avi file
     outputName = strcat(imageDir,'_',expName, '.avi');
     videoFile = fullfile(fullDir, outputName);
     delete(videoFile); %delete videofile if it already exists
     
-    %Construct a VideoWriter object, which creates a motion-jpeg avi file
     outputVideo = VideoWriter(videoFile);
-    outputVideo.FrameRate = fps;        %set fps to calculated fps
-    outputVideo.Quality = 100;
+    outputVideo.FrameRate = fps;
+    
     open(outputVideo);
     
     %Loop through image sequence and write it to video
