@@ -1,4 +1,6 @@
 %Function written by Adam Li on 07/28/14
+%Contact: adam2392@gmail.com if interested in talking about the code
+%
 %Input: -dirName is the directory name location
 %       -workName is the temporary working directory as a buffer for image
 %       saving

@@ -10,9 +10,19 @@
 %and saves it as a video
 
 function reanimateSkeleton(mainDir, fileName)
-    workingDir = mainDir;              %carries us into Camera_date folder
+    %% Initialize directory name and column vectors
+
+    %This depends on where you save your image folders **Subject to Change**
+    startDir = fullfile('/Users/adam2392/Desktop');
+
+    %initializes the directory where images are contained
+    fullDir = fullfile(startDir, mainDir, fileName);   
     
     %read data and import columns as column vectors
+    %%%%Only available in R2014A version!!! T = readtable('filename');%%%%%
+    
+    %Make sure csv file saved as Windows Comma Separated File if you are using MAC
+    %Does not get the last line of data for some reason...
     [head_x	 head_y	 head_z...
         shoulder_center_x	 shoulder_center_y	 shoulder_center_z...
         spine_x	 spine_y	 spine_z...
@@ -32,7 +42,8 @@ function reanimateSkeleton(mainDir, fileName)
         hip_right_x	 hip_right_y	 hip_right_z...
         knee_right_x	 knee_right_y	 knee_right_z...
         ankle_right_x	 ankle_right_y   ankle_right_z...
-        foot_right_x	 foot_right_y	 foot_right_z] = csvimport(fileName, ...
+        foot_right_x	 foot_right_y	 foot_right_z...
+        time_stamp] = csvimport(fullDir, ...
         'columns', {'head_x',	'head_y',  'head_z',...
         'shoulder_center_x', 'shoulder_center_y', 'shoulder_center_z',...
         'spine_x', 'spine_y', 'spine_z',...
@@ -52,8 +63,99 @@ function reanimateSkeleton(mainDir, fileName)
         'hip right_x',	 'hip right_y', 'hip right_z',...
         'knee right_x',	 'knee right_y', 'knee right_z',...
         'ankle right_x', 'ankle right_y', 'ankle right_z',...
-        'foot right_x',	 'foot right_y', 'foot right_z'});
+        'foot right_x',	 'foot right_y', 'foot right_z', 'time_stamp'});
 
+%% Draw points between each relevent joint & plot it
+    %Combine x,y of each joint into a separate temp matrix, and plot it
+    head = [head_x, head_y];
+    shoulder_center = [shoulder_center_x, shoulder_center_y];
+    spine = [spine_x, spine_y];
+    hip_center = [hip_center_x, hip_center_y];
+    shoulder_left = [shoulder_left_x, shoulder_left_y];
+    elbow_left = [elbow_left_x, elbow_left_y];
+    wrist_left = [wrist_left_x, wrist_left_y];
+    hand_left = [hand_left_x, hand_left_y];
+    shoulder_right = [shoulder_right_x, shoulder_right_y];
+    elbow_right = [elbow_right_x, elbow_right_y];
+    wrist_right = [wrist_right_x, wrist_right_y];
+    hand_right = [hand_right_x, hand_right_y];
+    hip_left = [hip_left_x, hip_left_y];
+    knee_left = [knee_left_x, knee_right_y];
+    ankle_left = [ankle_left_x, ankle_left_y];
+    foot_left = [foot_left_x, foot_left_y];
+    hip_right = [hip_right_x, hip_right_y];
+    knee_right = [knee_right_x, knee_right_y];
+    ankle_right = [ankle_right_x, ankle_right_y];
+    foot_right = [foot_right_x, foot_right_y];
     
+    %draw the line between each relevant vertice
+    %Each number in a row corresponds to a row in V
+    N = [1, 2;      %head -> shoulder_center              
+         2, 3;      %shoulder_center -> spine
+         3, 4;      %spine -> hip_center
+ 
+         2, 5;      %shoulder_center -> shoulder_left
+         5, 6;      %shoulder_left -> elbow_left
+         6, 7;      %elbow_left -> wrist_left
+         7, 8;      %wrist_left -> hand_left
+         
+         2, 9;      %shoulder_center -> shoulder_right
+         9, 10;     %shoulder_right -> elbow_right
+         10, 11;    %elbow_right -> wrist_right
+         11, 12;    %wrist_right -> hand_right
+         
+         4, 13;     %hip_center -> hip_left
+         13, 14;    %hip_left -> knee_left
+         14, 15;    %knee_left -> ankle_left
+         15, 16;    %ankle_left -> foot_left
+         
+         4, 17;     %hip_center -> hip_right
+         17, 18;    %hip_right -> knee_right
+         18, 19;    %knee_right -> ankle_right
+         19, 20];   %ankle_right -> foot_right
+     
+    %for loop to loop through each row of the csv file
+    %vertice matrix will be the different column vector joint's x and y
+    
+    for i=1:length(head_x)
+                                                           %%Row #'s
+        V = [head(i, 1), head(i, 2);                        %head = 1
+            shoulder_center(i, 1), shoulder_center(i, 2);   %shoulder_center = 2
+            spine(i, 1), spine(i, 2);                       %spine = 3
+            hip_center(i, 1), hip_center(i, 2);             %hip_center = 4
+            shoulder_left(i, 1), shoulder_left(i, 2);       %shoulder_left = 5
+            elbow_left(i, 1), elbow_left(i, 2);             %elbow_left = 6
+            wrist_left(i, 1), wrist_left(i, 2);             %wrist_left = 7
+            hand_left(i, 1), hand_left(i, 2);               %hand_left = 8
+            shoulder_right(i, 1), shoulder_right(i, 2);     %shoulder_right = 9
+            elbow_right(i, 1), elbow_right(i, 2);           %elbow_right = 10
+            wrist_right(i, 1), wrist_right(i, 2);           %wrist_right = 11
+            hand_right(i, 1), hand_right(i, 2);             %hand_right = 12
+            hip_left(i, 1), hip_left(i, 2);                 %hip_left = 13
+            knee_left(i, 1), knee_left(i, 2);               %knee_left = 14
+            ankle_left(i, 1), ankle_left(i, 2);             %ankle_left = 15
+            foot_left(i, 1), foot_left(i, 2);               %foot_left = 16
+            hip_right(i, 1), hip_right(i, 2);               %hip_right = 17
+            knee_right(i, 1), knee_right(i, 2);             %knee_right = 18
+            ankle_right(i, 1), ankle_right(i, 2);           %ankle_right = 19
+            foot_right(i, 1), foot_right(i, 2)];            %foot_right = 20
+    
+        for j=1:19 %loop through each of the 19 joint connections
+            a = N(j, 1);    %first vertice row# in V
+            b = N(j, 2);    %second vertice row# in V
+            
+            %temporary matrix for plotting out x, y
+            H(1,:)=V(a,:);  %first vertice's x, y
+            H(2,:)=V(b,:);  %second vertices' x, y
+            
+            %plot the line between those points, then loop again
+            plot(H(:,1),H(:,2), 'k*-', 'linewidth', 2)
+            hold on
+        end
         
+        %save the image with timestamp; timestamp is a 'string'
+        
+        %add chcking functionality to check for "bad images"
+        
+    end
 end
