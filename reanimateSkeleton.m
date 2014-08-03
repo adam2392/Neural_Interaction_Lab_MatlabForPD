@@ -121,7 +121,14 @@ function reanimateSkeleton(expName, mainDir, fileName)
     [s, mess, messid] = mkdir(fullDir, 'Skeleton_Images')
     
     t = cputime;
-    for i=1:5 %length(head_x)
+    %set up figure
+    f = figure(1);
+    % prevent the figure window from appearing at all
+    %set(f, 'visible', 'off');
+
+    
+    
+    for i=1:20 %length(head_x)
                                                            %%Row #'s
         V = [head(i, 1), head(i, 2);                        %head = 1
             shoulder_center(i, 1), shoulder_center(i, 2);   %shoulder_center = 2
@@ -152,14 +159,15 @@ function reanimateSkeleton(expName, mainDir, fileName)
             H(1,:)=V(a,:);  %first vertice's x, y
             H(2,:)=V(b,:);  %second vertices' x, y
                         
-            f =  figure(i);
-            % prevent the figure window from appearing at all
-            set(f, 'visible', 'off');
-         
             %plot the line between those points, then loop again
             plot(H(:,1),H(:,2), 'k*-', 'linewidth', 2)
             hold on
         end
+        
+        xlabel('x axis in meters');
+        ylabel('y axis in meters');
+        xlim([-1.25 1.25])
+        ylim([-1.25 1.25])
         
         %%add chcking functionality to check for "bad images"
         
@@ -185,11 +193,14 @@ function reanimateSkeleton(expName, mainDir, fileName)
         file = fullfile(fullDir, 'Skeleton_Images', imageName);
                 
         %save the image to file
-        saveas(figure(i), file);
-        hold off
-        close all;
+        saveas(f, file);
+        
+        %clear current plot
+        clf;
     end
+    close all;
+    
     time = cputime-t;
-    message = strcat({'Time elapsed is'}, num2str(time));
+    message = strcat({'Time elapsed is '}, num2str(time));
     disp(message);
 end
