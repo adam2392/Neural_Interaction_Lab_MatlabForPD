@@ -124,11 +124,11 @@ function reanimateSkeleton(expName, mainDir, fileName)
     %set up figure
     f = figure(1);
     % prevent the figure window from appearing at all
-    %set(f, 'visible', 'off');
+    set(f, 'visible', 'off');
 
     
     
-    for i=1:20 %length(head_x)
+    for i=1:100 %length(head_x)
                                                            %%Row #'s
         V = [head(i, 1), head(i, 2);                        %head = 1
             shoulder_center(i, 1), shoulder_center(i, 2);   %shoulder_center = 2
@@ -182,9 +182,29 @@ function reanimateSkeleton(expName, mainDir, fileName)
         %Check if time stamp in milliseconds is shorter to configure for saving images
         %Adds 0's to make other functions work
         if(length(time_stamp{i}) == 7)
-            imageName = strcat(imageName, time_stamp{i}, '00', '.png');
+            %Check if the first index in time_stamp is a space. If so,
+            %insert 0
+            if(time_stamp{i}(1) == ' ')
+                beforeMs = strcat('0',time_stamp{i}(2:6));
+            else
+                beforeMs = time_stamp{i}(1:6);
+            end
+            
+            %store the millisecond part of time_stamp
+            millisecond = time_stamp{i}(7);
+            imageName = strcat(imageName, beforeMs, '00',millisecond, '.png');
         elseif(length(time_stamp{i}) == 8)
-            imageName = strcat(imageName, time_stamp{i}, '0', '.png');
+            %Check if the first index in time_stamp is a space. If so,
+            %insert 0
+            if(time_stamp{i}(1) == ' ')
+                beforeMs = strcat('0',time_stamp{i}(2:6));
+            else
+                beforeMs = time_stamp{i}(1:6);
+            end
+            
+            %store the millisecond part of time_stamp
+            millisecond = time_stamp{i}(7:8);
+            imageName = strcat(imageName, beforeMs, '0',millisecond, '.png');
         else
             imageName = strcat(imageName, time_stamp{i}, '.png');
         end

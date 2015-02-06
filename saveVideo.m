@@ -16,14 +16,14 @@ function saveVideo(mainDir, imageDir, expName)
 %% Initialize and find all image file names
 
     %This depends on where you save your image folders **Subject to Change**
-    startDir = fullfile('/Users/adam2392/Desktop');
+    startDir = fullfile('/Volumes/NIL_PASS/Camera1/104_August18/104_Color_Walk/');
 
     %initializes the directory where images are contained
-    fullDir = fullfile(startDir, mainDir, imageDir, expName);       
+    fullDir = fullfile(startDir);%, mainDir, imageDir, expName);       
     
-    %Find all the PNG file names in the 001_Color, or 101_Color folders
+    %Find all the BMP file names in the 001_Color, or 101_Color folders
     %convert the set of images names to a cell array
-    imageNames = dir(fullfile(fullDir,'*.png'));
+    imageNames = dir(fullfile(fullDir,'*.bmp'));
     imageNames = {imageNames.name};
     
     %sort file names by extracting time stamp and use them to sort the array
@@ -102,8 +102,9 @@ function saveVideo(mainDir, imageDir, expName)
     
     %Loop through image sequence and write it to video
     for ii = 1:length(sortedImageNames)
-        img = imread(fullfile(fullDir, sortedImageNames{ii}));
-        
+        try
+            img = imread(fullfile(fullDir, sortedImageNames{ii}));
+        end
         message = strcat({'Writing image '}, sortedImageNames{ii});
         disp(message);
         
