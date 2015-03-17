@@ -7,6 +7,10 @@
 %       -expName is the experiment name (e.g. walk, sitstand, turn,etc.)
 %       with 001/101 and c1/c2
 %       So it would look like 'SitStand_001_c1'
+%
+% To run:
+% saveVideo(0,'Color', 'Walk');
+%
 %Output: vidOutput is a video file with all the 
 %images inputted into the file one by one
 %Description: Saves all the color image data into a stream of 
