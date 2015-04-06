@@ -9,14 +9,16 @@
 %Description: Saves all the skeletal data into a stream of images
 %and saves it as a video
 
-function reanimateSkeleton(expName, mainDir, fileName)
+% Example run: reanimateSkeleton('Walk', 'Skeleton_Walk_001_c1_07.csv')
+
+function reanimateSkeleton(expName, fileName)
     %% Initialize directory name and column vectors
 
     %This depends on where you save your image folders **Subject to Change**
-    startDir = '/Users/adam2392/Desktop';
+    startDir = '/Volumes/NIL_PASS/Camera1/001_August07';
 
     %initializes the directory where images are contained
-    fullDir = fullfile(startDir, mainDir);   
+    fullDir = fullfile(startDir);   
     
     %read data and import columns as column vectors
     %%%%Only available in R2014A version!!! T = readtable('filename');%%%%%
@@ -128,7 +130,7 @@ function reanimateSkeleton(expName, mainDir, fileName)
 
     
     
-    for i=1:100 %length(head_x)
+    for i=1:length(head_x)
                                                            %%Row #'s
         V = [head(i, 1), head(i, 2);                        %head = 1
             shoulder_center(i, 1), shoulder_center(i, 2);   %shoulder_center = 2

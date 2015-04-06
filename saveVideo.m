@@ -15,19 +15,20 @@
 %images inputted into the file one by one
 %Description: Saves all the color image data into a stream of 
 
+% Example: saveVideo(0, 'Skeleton', 'Walk');
 
 function saveVideo(mainDir, imageDir, expName)
 %% Initialize and find all image file names
 
     %This depends on where you save your image folders **Subject to Change**
-    startDir = fullfile('/Volumes/NIL_PASS/Camera1/104_August18/104_Color_Walk/');
+    startDir = fullfile('/Volumes/NIL_PASS/Camera1/001_August07/Skeleton_Images/');
 
     %initializes the directory where images are contained
     fullDir = fullfile(startDir);%, mainDir, imageDir, expName);       
     
     %Find all the BMP file names in the 001_Color, or 101_Color folders
     %convert the set of images names to a cell array
-    imageNames = dir(fullfile(fullDir,'*.bmp'));
+    imageNames = dir(fullfile(fullDir,'*.png'));
     imageNames = {imageNames.name};
     
     %sort file names by extracting time stamp and use them to sort the array
@@ -100,7 +101,7 @@ function saveVideo(mainDir, imageDir, expName)
     
     %Construct a VideoWriter object, which creates a motion-jpeg avi file
     outputVideo = VideoWriter(videoFile);
-    outputVideo.FrameRate = fps;        %set fps to calculated fps
+    outputVideo.FrameRate = 23;%fps;        %set fps to calculated fps
     outputVideo.Quality = 100;
     open(outputVideo);
     
