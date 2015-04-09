@@ -43,6 +43,7 @@ Subj_Name.step = step;
 Subj_Name.stepLength = stepLength;
 Subj_Name.cadence = cadence;
 
+% takes subject name and renames it with the subject number
 eval(['Subj_' sub{1} '_Step' '= Subj_Name;'])
 
 if (exist('Processed_StepLength','dir') ~= 7)

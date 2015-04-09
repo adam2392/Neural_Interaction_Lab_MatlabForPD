@@ -1,8 +1,7 @@
 %Function written by Adam Li on 02/09/15
-%Input: - dirName is the directory name location
-%       - expName is the experiment name (e.g. walk, sitstand, turn,etc.)
-%       with 001/101 and c1/c2
-%       - 
+%Input: - dirName is the directory with the csv file or directory below it..
+%       - expName is the experiment name
+%       - subjNumber is the subject number
 %
 %Output: - Modifies skeletal data csv file to add marks based on segmented
 %files
@@ -43,8 +42,12 @@ function rangeMat = markSegments(dirName, expName, subjNumber)
 %     
     %% Second Method: Read in Analysis Ranges from CSV File
     currentDir = cd;    %store the current directory
+    
+    %%%%%% Change this if needed
     cd('/Users/adam2392/Desktop');
     inputCsv = 'Camera1_Walk_Segmented.csv';
+    %%%%%%
+    
     
     %%% read in the csv file
     filename = inputCsv;
@@ -142,7 +145,9 @@ function rangeMat = markSegments(dirName, expName, subjNumber)
         %see if the csv file is found
         index = strfind(csvName{i}, expName);
         
-        if(~isempty(index))
+        subjindex = strfind(csvName{i}, subjNumber);
+        
+        if(~isempty(index) && ~isempty(subjindex))
             csvFile = csvName{i};
             break;
         end
@@ -194,8 +199,7 @@ function rangeMat = markSegments(dirName, expName, subjNumber)
 %         'knee right_x',	 'knee right_y', 'knee right_z',...
 %         'ankle right_x', 'ankle right_y', 'ankle right_z',...
 %         'foot right_x',	 'foot right_y', 'foot right_z', 'time_stamp'});
-      
-          
+            
     filename = csvFile;
     % - Get structure from first line.
     fid  = fopen( filename, 'r' );
@@ -230,7 +234,8 @@ function rangeMat = markSegments(dirName, expName, subjNumber)
     end
     
     epsilon = 500;
-    
+
+    %%% First method
 %     %% First Method: Marking
 %     firstFrameSplit = regexp(firstFrame, '\_', 'split');
 %     lastFrameSplit = regexp(lastFrame, '\_', 'split');
@@ -368,6 +373,7 @@ function rangeMat = markSegments(dirName, expName, subjNumber)
                 startIndex(index) = i  %store the index for where to first start analyzing
                 startRange(index) = 1;
                 endFound = 0;
+                
             end
             
             % if we found the end part of that range
@@ -375,6 +381,7 @@ function rangeMat = markSegments(dirName, expName, subjNumber)
                 endFound = 1;
                 endIndex(index) = i
                 index = index + 1;
+              
             end
         else
             break;
