@@ -4,15 +4,16 @@ function [ output_args ] = importSkeleton( subj_string )
 %Dependencies: 
 %    - getAllFiles.m 
 %    -             
-%Example: subj_string = {'022.1','022.2'};
+%Example: subj_string = {'022.1','022.2'}; or subj_string = {'021.1'}
  %% Initialize directory name and column vectors
     
     %This depends on where you save your image folders **Subject to Change**
-    startDir = '/Users/Neil/Desktop/';
-    mainDir = 'Patient_Data/Skeleton_Coords/';
+    startDir = '/Volumes/NIL_PASS/Camera1/';%'/Users/adam2392/Desktop/'; %/Volumes/NIL_PASS/Camera1/001_August07/001_Color_Walk
+    mainDir = '/021.2_November18/Skeleton';
     
     %Separate written Function imports all file names and directory name
     files = getAllFiles(fullfile(startDir,mainDir));
+    
     
  %% Initialize Structure Parameters
  
