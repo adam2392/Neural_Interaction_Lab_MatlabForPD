@@ -16,7 +16,7 @@ function reanimateSkeleton(expName, fileName)
     %% Initialize directory name and column vectors
 
     %This depends on where you save your image folders **Subject to Change**
-    startDir = '/Volumes/NIL_PASS/Camera1/021.1_November18/Skeleton';
+    startDir = '/Volumes/NIL_PASS/Camera1/021.2_November18/Skeleton';
 
     %initializes the directory where images are contained
     fullDir = fullfile(startDir);   
@@ -91,6 +91,31 @@ function reanimateSkeleton(expName, fileName)
     ankle_right = [ankle_right_x, ankle_right_y];
     foot_right = [foot_right_x, foot_right_y];
     
+    %Accounts for the fact that some csv files were saved as strings
+    %instead??...
+    if(~isnumeric(head_x))
+        head = str2double([head_x, head_y]);
+        shoulder_center = str2double([shoulder_center_x, shoulder_center_y]);
+        spine = str2double([spine_x, spine_y]);
+        hip_center = str2double([hip_center_x, hip_center_y]);
+        shoulder_left = str2double([shoulder_left_x, shoulder_left_y]);
+        elbow_left = str2double([elbow_left_x, elbow_left_y]);
+        wrist_left = str2double([wrist_left_x, wrist_left_y]);
+        hand_left = str2double([hand_left_x, hand_left_y]);
+        shoulder_right = str2double([shoulder_right_x, shoulder_right_y]);
+        elbow_right = str2double([elbow_right_x, elbow_right_y]);
+        wrist_right = str2double([wrist_right_x, wrist_right_y]);
+        hand_right = str2double([hand_right_x, hand_right_y]);
+        hip_left = str2double([hip_left_x, hip_left_y]);
+        knee_left = str2double([knee_left_x, knee_left_y]);
+        ankle_left = str2double([ankle_left_x, ankle_left_y]);
+        foot_left = str2double([foot_left_x, foot_left_y]);
+        hip_right = str2double([hip_right_x, hip_right_y]);
+        knee_right = str2double([knee_right_x, knee_right_y]);
+        ankle_right = str2double([ankle_right_x, ankle_right_y]);
+        foot_right = str2double([foot_right_x, foot_right_y]);
+    end
+    
     %draw the line between each relevant vertice
     %Each number in a row corresponds to a row in V
     N = [1, 2;      %head -> shoulder_center              
@@ -159,8 +184,8 @@ function reanimateSkeleton(expName, fileName)
             b = N(j, 2);    %second vertice row# in V
             
             %temporary matrix for plotting out x, y
-            H(1,:)=V(a,:);  %first vertice's x, y
-            H(2,:)=V(b,:);  %second vertices' x, y
+            H(1,:)=(V(a,:));  %first vertice's x, y
+            H(2,:)=(V(b,:));  %second vertices' x, y
                         
             %plot the line between those points, then loop again
             plot(H(:,1),H(:,2), 'k*-', 'linewidth', 2)
