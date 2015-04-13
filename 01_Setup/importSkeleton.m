@@ -9,7 +9,7 @@ function [ output_args ] = importSkeleton( subj_string )
     
     %This depends on where you save your image folders **Subject to Change**
     startDir = '/Users/adam2392/Desktop/';%'/Volumes/NIL_PASS/Camera1/'; %/Volumes/NIL_PASS/Camera1/001_August07/001_Color_Walk
-    mainDir = '/Analysis Folder/022.1/';%'/022.1_November18/Skeleton/';
+    mainDir = '/Analysis Folder/';%'/022.1_November18/Skeleton/';
     
     %Separate written Function imports all file names and directory name
     files = getAllFiles(fullfile(startDir,mainDir));
@@ -99,6 +99,7 @@ function [ output_args ] = importSkeleton( subj_string )
                         compare = curr(indexofSkeleton+1:end);
 
                         for index = 1:length(csvName)
+
                             if strcmp(csvName{index}, compare)
                                 indexofFile = index;
                             end

@@ -20,8 +20,8 @@
 % Specify the strings you wish to examine. These are the only strings that
 % worked with the markSegments (I had to change the file names to end with
 % suffix _c1. 
-subj_test_off = {'021.1', '022.1'}; 
-subj_test_on = {'021.2', '022.2'}; 
+subj_test_off = {}; 
+subj_test_on = {'013.2', '014.2', '015.2', '017.2'}; 
 subj_string = [subj_test_off, subj_test_on]; 
 
 % Locations of subject .mat files generated via importSkeleton as well as
@@ -43,7 +43,7 @@ for iii = 1:length(subj_string)
     % 9 Tests per .mat file
     ranges = markSegments(csv_files, 'Walk', subj_string{iii}); 
 
-    sub = {strrep(subj_string{iii},'.','_')};
+    sub = {strrep(subj_string{iii},'.','_')}
 
     load_string = strcat(mat_files, 'Subj_', sub{1})
     load(load_string)
@@ -89,7 +89,8 @@ for iii = 1:length(subj_string)
     cadence = diff(loc).*(1/sampling_rate);
 
     % Very crude estimates of mean peak amplitude and oscillating frequencies.
-    amplitude = mean(pks); 
+    amplitude = mean(pks);  % mean of step peaks
+    variance = var(pks);    % variance of peaks
     base_frequency = mean(cadence); stdev = std(cadence); 
     adj_frequency = mean(cadence(abs(cadence - base_frequency) < 2*stdev)); 
 
@@ -99,6 +100,7 @@ for iii = 1:length(subj_string)
     Subj_Name.stepLength = stepLength;
     Subj_Name.cadence = cadence;
     Subj_Name.amplitude = amplitude; 
+    Subj_Name.variance = variance;
     Subj_Name.frequency = adj_frequency; 
     Subj_Name.samples = test_starts; 
 
@@ -121,7 +123,7 @@ plot(Subj_021_1_Step.step);
 plot(Subj_021_1_Step.loc, Subj_021_1_Step.step(Subj_021_1_Step.loc), ...
     'd', 'MarkerFaceColor', 'g');
 yLims = get(gca, 'YLim');
-for iii=1:length(Subj_020_1_Step.samples)
+for iii=1:length(Subj_021_1_Step.samples)
     line(Subj_021_1_Step.samples(iii)*ones(1, 2), yLims, 'Color', 'r'); 
 end
 title('Subject 20-ON');

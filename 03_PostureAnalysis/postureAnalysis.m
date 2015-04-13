@@ -87,6 +87,10 @@ function postureAnalysis(mat01, subjNum)%, ~mat02)
     hax = axes;
     hold on
     plot(totalAngle)
+    titleplot = strcat('Graph of Angle Head-Spine vs. Time of', ' ', subjNum);
+    title(titleplot)
+    xlabel('time')
+    ylabel('Angle (degrees) from head to spine')
     for i=1:length(expSections)
         SP = expSections(i);
         line([SP SP], [200 0], 'Color',[1 0 0])
