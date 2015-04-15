@@ -26,7 +26,7 @@ subj_string = [subj_test_off, subj_test_on];
 
 % Locations of subject .mat files generated via importSkeleton as well as
 % the CSV files from video (assumed to be same parent directory)
-mainDir = '/Users/adam2392/Documents/MATLAB/Neural_Interaction_Lab_MatlabForPD';
+mainDir = '/Users/Madhu/Dropbox/Programming/research/Neural_Interaction_Lab_MatlabForPD';
 matDir = '/01_Setup/Subj_Preprocessed_Data/'; 
 csvDir = '/04_Skeleton_Coords/'; 
 
@@ -75,7 +75,7 @@ for iii = 1:length(subj_string)
     highestPeak = max(stepLength);
 
     % Find prominent peaks (see findpeakProminent
-    thres = 0.05;
+    thres = 0.01;
     min_prominence = thres.*(prctile(stepLength, 91) - prctile(stepLength, 9)); 
     [pks, loc, prom] = findpeaksProminent(stepLength, min_prominence);
 
