@@ -21,7 +21,7 @@ function saveVideo(mainDir, imageDir, expName)
 %% Initialize and find all image file names
 
     %This depends on where you save your image folders **Subject to Change**
-    startDir = fullfile('/Volumes/NIL_PASS/Camera1/021.2_November18/Skeleton/Skeleton_Images/');
+    startDir = fullfile('/Volumes/NIL_PASS/Camera1/021.1_November18/021.1_Color_SitTurn/');
 
     %initializes the directory where images are contained
     fullDir = fullfile(startDir);%, mainDir, imageDir, expName);       

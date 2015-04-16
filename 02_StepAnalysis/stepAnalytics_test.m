@@ -20,8 +20,10 @@
 % Specify the strings you wish to examine. These are the only strings that
 % worked with the markSegments (I had to change the file names to end with
 % suffix _c1. 
+% '013.1', '014.1', '015.1','016.1', '017.1', '020.1', '021.1', '022.1'
+% '013.2', '014.2', '015.2', '016.2', '017.2', '021.2', '022.2'
 subj_test_off = {}; 
-subj_test_on = {'013.2', '014.2', '015.2', '017.2'}; 
+subj_test_on = {}; 
 subj_string = [subj_test_off, subj_test_on]; 
 
 % Locations of subject .mat files generated via importSkeleton as well as
@@ -53,9 +55,11 @@ for iii = 1:length(subj_string)
     % Moving average filter for smoothing
     ankle_diff = []; % ankle_left_x-ankle_right_x
     test_starts = []; % Indices for the start of tests for a sample. 
+    time_stamps = [];
+    time = {};
+    
     for jjj = 1:size(ranges, 1)
-        test_starts = [test_starts, length(ankle_diff)];
-       
+        %% Calculate step and store it in variable
         if(~isnumeric(placeholder_Name.Walk.ankle_left.x(ranges(jjj, 1):ranges(jjj, 2))))
              ankle_diff = [ankle_diff; ...
                 str2double(placeholder_Name.Walk.ankle_left.x(ranges(jjj, 1):ranges(jjj, 2))) - ... 
@@ -64,6 +68,32 @@ for iii = 1:length(subj_string)
             ankle_diff = [ankle_diff; ...
                 placeholder_Name.Walk.ankle_left.x(ranges(jjj, 1):ranges(jjj, 2)) - ... 
                 placeholder_Name.Walk.ankle_right.x(ranges(jjj, 1):ranges(jjj, 2))];
+        end
+        
+        test_starts = [test_starts, length(ankle_diff)];
+        
+        %% Store the time stamps in variable list also -> plot time vs. step
+        time = placeholder_Name.Walk.time_stamp(ranges(jjj,1):ranges(jjj,2));
+    
+        for t=1:length(time)
+            %split up the timestamp into its 3 components and then 
+            %correct time stamps, if they dont' have enough integers
+            csvtimeSplit = regexp(time{t}, '\:', 'split');
+
+            % if it is a newer file, where timestamps are separated by _
+            % instead of :
+            if(length(csvtimeSplit) == 1)
+                csvtimeSplit = regexp(time{t}, '\_', 'split');
+            end
+
+            %check if we found the time stamp that is close to the first frame
+            %convert to milliseconds
+            minutes = 60000*str2double(csvtimeSplit{1});
+            seconds = 1000*str2double(csvtimeSplit{2});
+            milliseconds = str2double(csvtimeSplit{3});
+            total = minutes+seconds+milliseconds;
+
+            time_stamps = [time_stamps, total];
         end
     end
 
@@ -103,6 +133,7 @@ for iii = 1:length(subj_string)
     Subj_Name.variance = variance;
     Subj_Name.frequency = adj_frequency; 
     Subj_Name.samples = test_starts; 
+    Subj_Name.timestamps = time_stamps;
 
     eval(['Subj_' sub{1} '_Step' '= Subj_Name;'])
 
@@ -119,15 +150,18 @@ clearvars -except Subj_*_Step
 
 figure(1); 
 hold on; 
-plot(Subj_021_1_Step.step); 
-plot(Subj_021_1_Step.loc, Subj_021_1_Step.step(Subj_021_1_Step.loc), ...
-    'd', 'MarkerFaceColor', 'g');
+plot(Subj_021_1_Step.timestamps,Subj_021_1_Step.step); %plot time vs. step
+% plot(Subj_021_1_Step.loc, Subj_021_1_Step.step(Subj_021_1_Step.loc), ...
+%     'd', 'MarkerFaceColor', 'g');
 yLims = get(gca, 'YLim');
+samples = Subj_021_1_Step.samples;
+max = max(Subj_021_1_Step.step);
 for iii=1:length(Subj_021_1_Step.samples)
-    line(Subj_021_1_Step.samples(iii)*ones(1, 2), yLims, 'Color', 'r'); 
+    timemark = Subj_021_1_Step.timestamps(samples(iii));
+    line([timemark timemark], [-0.8 0.8], 'Color', 'r')
+%     line(Subj_021_1_Step.timestamps(samples(iii))*ones(1, 2), yLims, 'Color', 'r'); 
 end
 title('Subject 20-ON');
-
 
 
 %% 

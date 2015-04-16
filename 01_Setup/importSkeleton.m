@@ -4,7 +4,10 @@ function [ output_args ] = importSkeleton( subj_string )
 %Dependencies: 
 %    - getAllFiles.m 
 %    -             
-%Example: subj_string = {'022.1','022.2'}; or subj_string = {'021.1'}
+%Example: subj_string = {'013.1', '013.2', '014.1', '014.2',
+% '015.1', '015.2', '016.1', '016.2', '017.1', 
+% '017.2', '020.1', '020.2', '021.1', '021.2', '022.1','022.2'}; 
+% or subj_string = {'021.1'}
  %% Initialize directory name and column vectors
     
     %This depends on where you save your image folders **Subject to Change**
@@ -21,7 +24,7 @@ function [ output_args ] = importSkeleton( subj_string )
     joint = {'ankle_left','ankle_right','elbow_left','elbow_left','elbow_right',...
         'foot_left','foot_right','hand_left','hand_right','head','hip_center',...
         'hip_left','hip_right','knee_left','knee_right','shoulder_center',...
-        'shoulder_left','shoulder_right','spine','wrist_left','wrist_right'};
+        'shoulder_left','shoulder_right','spine','wrist_left','wrist_right', 'time_stamp'};
     activity = {'SitStand','SitTurn','StandGo','Walk'};
 
     %% Import CSV File
@@ -134,8 +137,12 @@ function [ output_args ] = importSkeleton( subj_string )
                     for j = 1:length(joint)
                         for k = 1:length(coord)
                             data_string = [joint{j} '_' coord{k}];
-
-                            Subj_Name.(activity{ii}).(joint{j}).(coord{k}) = eval(data_string);
+                            if(strcmp(joint{j}, 'time_stamp'))
+                                data_string = [joint{j}];
+                                Subj_Name.(activity{ii}).(joint{j}) = eval(data_string);
+                            else
+                                Subj_Name.(activity{ii}).(joint{j}).(coord{k}) = eval(data_string);
+                            end
                         end
                     end
                 end
