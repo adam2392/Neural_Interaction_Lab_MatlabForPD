@@ -8,49 +8,25 @@
 %
 % To run:
 % markSegments('/Volumes/NIL_PASS/Camera1/001_August07/001_Color_Walk',
-% 'Walk', '001');
+% 'Walk', '001', '/Users/adam2392/Desktop/Camera1_Walk_Segmented.csv');
 % ***Assumes that all csv files are segmented by subject id...
+% 
 %
 %Description: Takes all the segmented files and inserts marks in skeletal
 %data csv file to determine which ranges of time series to analyze.
 
-function rangeMat = markSegments(dirName, expName, subjNumber)    
-    %% First Method: Initialize directory name and get initial files and the range of analysis
-    % 1. get .bmp images as a list
-    % 2. calculate time stamps and get fps
-    % 3. get time stamps at beginning and end of the segments
-%     
-%     currentDir = cd;    %store the current directory
-%     
-%     %get all bmp files in the folder as a list
-%     files = dir(fullfile(dirName, '*.bmp'));
-%     files = {files.name};   %get all the file names minus extension
-% 
-%     %sort the image names
-%     sortedImageNames = sortrows(files);
-%     
-%     %%Calculate the time stamps
-%     %find the timestamps of the saved images ->fps-> save into video with same fps
-%     timeStamp = strfind(sortedImageNames{1}, 'c1');
-%     if (isempty(timeStamp))
-%         timeStamp = strfind(sortedImageNames{1}, 'c2');
-%     end
-%     
-%     %get the time stamp at the beginning and end of segments
-%     firstFrame = sortedImageNames{1}((timeStamp+3):(timeStamp+11));
-%     lastFrame = sortedImageNames{end}((timeStamp+3):(timeStamp+11));
-%     
+function rangeMat = markSegments(skeletonDir, expName, subjNumber, segmentFile)      
     %% Second Method: Read in Analysis Ranges from CSV File
     currentDir = cd;    %store the current directory
     
     %%%%%% Change this if needed
-    cd('/Users/adam2392/Desktop');
-    inputCsv = 'Camera1_Walk_Segmented.csv';
+    segmentDir = fileparts(segmentFile);
+    cd(segmentDir);
+    inputCsv = dir(segmentFile);
     %%%%%%
-    
-    
+
     %%% read in the csv file
-    filename = inputCsv;
+    filename = inputCsv.name;
     % - Get structure from first line.
     fid  = fopen( filename, 'r' );
     line = fgetl( fid );    %get first line
@@ -118,7 +94,7 @@ function rangeMat = markSegments(dirName, expName, subjNumber)
     % 2. loop through the list and check if one has the expName in it
     
     %change directory to location of images and try to find csv files
-    cd(dirName);
+    cd(skeletonDir);
     csvDir = cd;
     
     try
@@ -159,7 +135,9 @@ function rangeMat = markSegments(dirName, expName, subjNumber)
     %cd(currentDir);
     
     %% Mark the csv file for analysis
-            
+    if (isempty(csvFile))
+        disp('Check original list of subject numbers!')
+    end
     filename = csvFile;
     % - Get structure from first line.
     fid  = fopen( filename, 'r' );

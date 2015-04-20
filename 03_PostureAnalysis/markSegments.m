@@ -8,49 +8,25 @@
 %
 % To run:
 % markSegments('/Volumes/NIL_PASS/Camera1/001_August07/001_Color_Walk',
-% 'Walk', '001');
+% 'Walk', '001', '/Users/adam2392/Desktop/Camera1_Walk_Segmented.csv');
 % ***Assumes that all csv files are segmented by subject id...
+% 
 %
 %Description: Takes all the segmented files and inserts marks in skeletal
 %data csv file to determine which ranges of time series to analyze.
 
-function rangeMat = markSegments(dirName, expName, subjNumber)    
-    %% First Method: Initialize directory name and get initial files and the range of analysis
-    % 1. get .bmp images as a list
-    % 2. calculate time stamps and get fps
-    % 3. get time stamps at beginning and end of the segments
-%     
-%     currentDir = cd;    %store the current directory
-%     
-%     %get all bmp files in the folder as a list
-%     files = dir(fullfile(dirName, '*.bmp'));
-%     files = {files.name};   %get all the file names minus extension
-% 
-%     %sort the image names
-%     sortedImageNames = sortrows(files);
-%     
-%     %%Calculate the time stamps
-%     %find the timestamps of the saved images ->fps-> save into video with same fps
-%     timeStamp = strfind(sortedImageNames{1}, 'c1');
-%     if (isempty(timeStamp))
-%         timeStamp = strfind(sortedImageNames{1}, 'c2');
-%     end
-%     
-%     %get the time stamp at the beginning and end of segments
-%     firstFrame = sortedImageNames{1}((timeStamp+3):(timeStamp+11));
-%     lastFrame = sortedImageNames{end}((timeStamp+3):(timeStamp+11));
-%     
+function rangeMat = markSegments(skeletonDir, expName, subjNumber, segmentFile)      
     %% Second Method: Read in Analysis Ranges from CSV File
     currentDir = cd;    %store the current directory
     
     %%%%%% Change this if needed
-    cd('/Users/adam2392/Desktop');
-    inputCsv = 'Camera1_Walk_Segmented.csv';
+    segmentDir = fileparts(segmentFile);
+    cd(segmentDir);
+    inputCsv = dir(segmentFile);
     %%%%%%
-    
-    
+
     %%% read in the csv file
-    filename = inputCsv;
+    filename = inputCsv.name;
     % - Get structure from first line.
     fid  = fopen( filename, 'r' );
     line = fgetl( fid );    %get first line
@@ -79,6 +55,8 @@ function rangeMat = markSegments(dirName, expName, subjNumber)
     bf = 0;
     startTime = [];
     endTime = [];
+    
+    length(data)
     for i=1:length(data)
         %break up the data segments
         temp = textscan(data{i}, '%s', 'Delimiter', ',');
@@ -89,10 +67,10 @@ function rangeMat = markSegments(dirName, expName, subjNumber)
         if(~cellfun(@isempty, check) || foundRange == 1)
             foundRange = 1;
             
-            
             %loop until you encounter empty cell
             if(cellfun(@isempty, temp{1}(1)))
                 bf = 1;
+                disp('empty cell found!')
                 break;
             end
             
@@ -116,7 +94,7 @@ function rangeMat = markSegments(dirName, expName, subjNumber)
     % 2. loop through the list and check if one has the expName in it
     
     %change directory to location of images and try to find csv files
-    cd(dirName);
+    cd(skeletonDir);
     csvDir = cd;
     
     try
@@ -157,7 +135,9 @@ function rangeMat = markSegments(dirName, expName, subjNumber)
     %cd(currentDir);
     
     %% Mark the csv file for analysis
-            
+    if (isempty(csvFile))
+        disp('Check original list of subject numbers!')
+    end
     filename = csvFile;
     % - Get structure from first line.
     fid  = fopen( filename, 'r' );
@@ -192,67 +172,6 @@ function rangeMat = markSegments(dirName, expName, subjNumber)
     end
     
     epsilon = 500;
-
-    %%% First method
-%     %% First Method: Marking
-%     firstFrameSplit = regexp(firstFrame, '\_', 'split');
-%     lastFrameSplit = regexp(lastFrame, '\_', 'split');
-%             
-%     firstFrameMin = 60000*str2double(firstFrameSplit{1});
-%     firstFrameSec = 1000*str2double(firstFrameSplit{2});
-%     firstFrameMs = str2double(firstFrameSplit{3});
-%     firstFrameTotal = firstFrameMin + firstFrameSec + firstFrameMs;
-% 
-%     lastFrameMin = 60000*str2double(lastFrameSplit{1});
-%     lastFrameSec = 1000*str2double(lastFrameSplit{2});
-%     lastFrameMs = str2double(lastFrameSplit{3});
-%     lastFrameTotal = lastFrameMin + lastFrameSec + lastFrameMs;
-%     
-%         
-%     %loop through time stamps to find the firstFrame - lastFrame range
-%     %that is within epsilon of each other
-%     for i=2:length(time)
-%         % 1. check if the time stamps have '2', '2', and '3' characters
-%         % first
-%         % 2. if not, add '0's in front before comparing
-%         %check minutes
-%         
-%         %split up the timestamp into its 3 components and then 
-%         %correct time stamps, if they dont' have enough integers
-%         csvtimeSplit = regexp(time{i}, '\:', 'split');
-%         
-%         if(length(csvtimeSplit{1}) == 1) %check length of minutes
-%             csvtimeSplit{1} = strcat('0', csvtimeSplit{1});
-%         end
-%         
-%         if(length(csvtimeSplit{2}) == 1) %check length of seconds
-%             csvtimeSplit{2} = strcat('00', csvtimeSplit{2});
-%         elseif(length(csvtimeSplit{2}) == 2)
-%             csvtimeSplit{2} = strcat('0', csvtimeSplit{2});
-%         end
-%         
-%         if(length(csvtimeSplit{3}) == 1) %check length of milliseconds
-%             csvtimeSplit{3} = strcat('00', csvtimeSplit{3});
-%         elseif(length(csvtimeSplit(3)) == 2)
-%             csvtimeSplit{3} = strcat('0', csvtimeSplit{3});
-%         end
-%         
-%         %check if we found the time stamp that is close to the first frame
-%         %convert to milliseconds
-%         minutes = 60000*str2double(csvtimeSplit{1});
-%         seconds = 1000*str2double(csvtimeSplit{2});
-%         milliseconds = str2double(csvtimeSplit{3});
-%         total = minutes+seconds+milliseconds;
-%                
-%         if (abs(total - firstFrameTotal) < epsilon)
-%             total
-%             firstIndex = i  %store the index for where to first start analyzing
-%         end
-%         if (abs(total - lastFrameTotal) < epsilon)
-%             total
-%             lastIndex = i
-%         end
-%     end
     
     %% Second Method: Marking
     
@@ -262,6 +181,10 @@ function rangeMat = markSegments(dirName, expName, subjNumber)
     
     %loop through
     for i=1:length(startTime)
+        % If one of the trials was aborted... ignore
+%         if(strcmp(startTime{i},'Aborted'))
+%             break;
+%         end
         startTimeSplit = regexp(startTime{i}, '\_', 'split');
         endTimeSplit = regexp(endTime{i}, '\_', 'split');
 
@@ -284,6 +207,14 @@ function rangeMat = markSegments(dirName, expName, subjNumber)
     startRange = zeros(9, 1);
     startIndex = zeros(9, 1);
     endIndex = zeros(9, 1);
+    
+    %only six trials done... 
+    if(length(startTime) <=8)
+        startRange = zeros(length(startTime), 1);
+        startIndex = zeros(length(startTime), 1);
+        endIndex = zeros(length(startTime), 1);
+    end
+   
     for i=2:length(time)
         % 1. check if the time stamps have '2', '2', and '3' characters
         % first
@@ -323,7 +254,15 @@ function rangeMat = markSegments(dirName, expName, subjNumber)
         milliseconds = str2double(csvtimeSplit{3});
         total = minutes+seconds+milliseconds;
         
-        if(index < 10)
+        %index is going through, startTime is the length of how many trials
+        %we have
+        if(length(startTime) <= 8) %We had ~6 trials or less... change endPoint of range of Analysis to 6
+            endPoint = length(startTime) + 1;
+        else
+            endPoint = 10;  % This is the amount of ranges we have
+        end
+        
+        if(index < endPoint)
             comparisonStart = abs(total - startTimeTotal(index));
             comparisonEnd = abs(total - endTimeTotal(index));
             %now compare total with the startTimeTotal and endTimeTotal
