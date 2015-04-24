@@ -28,14 +28,16 @@ subj_string = [subj_test_off, subj_test_on];
 
 % Locations of subject .mat files generated via importSkeleton as well as
 % the CSV files from video (assumed to be same parent directory)
-mainDir = '/Users/Madhu/Dropbox/Programming/research/Neural_Interaction_Lab_MatlabForPD';
+mainDir = '/Users/adam2392/Documents/MATLAB/Neural_Interaction_Lab_MatlabForPD';
 matDir = '/01_Setup/Subj_Preprocessed_Data/'; 
 csvDir = '/04_Skeleton_Coords/'; 
 
+expName = 'Walk';
+segmentDir = '/Users/adam2392/Desktop';
+segmentFile = fullfile(segmentDir, 'Camera1_Walk_Segmented.csv');
+
 mat_files = fullfile(mainDir, matDir);
 csv_files = fullfile(mainDir, csvDir); 
-
-sampling_rate = 30;
 
 %% Generate MAT files for steps
 for iii = 1:length(subj_string)
@@ -43,7 +45,7 @@ for iii = 1:length(subj_string)
     disp(subj_string{iii})  % displays current subject we are on...
 
     % 9 Tests per .mat file
-    ranges = markSegments(csv_files, 'Walk', subj_string{iii}); 
+    ranges = markSegments(csv_files, expName, subj_string{iii}, segmentFile); 
 
     sub = {strrep(subj_string{iii},'.','_')}
 
@@ -115,7 +117,8 @@ for iii = 1:length(subj_string)
     ind_remove = [-1*peak_signs(1); peak_signs] == 0; 
     pks(ind_remove == 1) = []; 
     loc(ind_remove == 1) = []; 
-
+    
+    sampling_rate = abs(timestamps(end) - timestamps(1))/length(timestamps);
     cadence = diff(loc).*(1/sampling_rate);
 
     % Very crude estimates of mean peak amplitude and oscillating frequencies.
