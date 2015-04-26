@@ -1,17 +1,26 @@
 % Load all the data and run get_performance.m
 
-off_13 = load('subjects/subj_013_1_Step.mat');
-on_13  = load('subjects/subj_013_2_Step.mat');
-off_14 = load('subjects/subj_014_1_Step.mat');
-on_14  = load('subjects/subj_014_2_Step.mat');
-off_15 = load('subjects/subj_015_1_Step.mat');
-on_15  = load('subjects/subj_015_2_Step.mat');
-off_17 = load('subjects/subj_017_1_Step.mat');
-on_17  = load('subjects/subj_017_2_Step.mat');
-off_21 = load('subjects/subj_021_1_Step.mat');
-on_21  = load('subjects/subj_021_2_Step.mat');
-off_22 = load('subjects/subj_022_1_Step.mat');
-on_22  = load('subjects/subj_022_2_Step.mat');
+% files with the mat files of interest
+mainDir = '/Users/adam2392/Documents/MATLAB/Neural_Interaction_Lab_MatlabForPD';
+matDir = '/02_StepAnalysis/Processed_StepLength/'; 
+mat_files = fullfile(mainDir, matDir);
+currentdir = cd;
+cd(mat_files)
+
+off_13 = load('subj_013_1_Step.mat');
+on_13  = load('subj_013_2_Step.mat');
+off_14 = load('subj_014_1_Step.mat');
+on_14  = load('subj_014_2_Step.mat');
+off_15 = load('subj_015_1_Step.mat');
+on_15  = load('subj_015_2_Step.mat');
+off_17 = load('subj_017_1_Step.mat');
+on_17  = load('subj_017_2_Step.mat');
+off_21 = load('subj_021_1_Step.mat');
+on_21  = load('subj_021_2_Step.mat');
+off_22 = load('subj_022_1_Step.mat');
+on_22  = load('subj_022_2_Step.mat');
+
+cd(currentdir)
 
 R = zeros(3,13);
 y = [ 0;1;0;1;0;1;0;1;0;1;0;1 ];
