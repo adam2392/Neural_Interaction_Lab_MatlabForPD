@@ -1,11 +1,14 @@
 % Remove flat space between steps, discard noisy steps, and make all steps have same sign
 function steps = extract_steps(data)
     % Step must go above threshold and below - threshold to be considered a step
-    threshold = 0.5*max(data);
-    steps = [];
-    start = 0;
-    state = 0;
-    stepcount = 0;
+    threshold = 0.5*max(data);  %% threshold is half of the max step...
+    
+    steps = []; % initialize list of steps that will be the result
+    start = 0;  % start counter
+    state = -1;  % state of the data
+    stepcount = 0;  % counter for the steps
+    
+    % loop through the data input
     for i = 1:length(data)-1
         % Ignore flat space, wait till step leaves close to zero boundary
         if state == -1
@@ -41,8 +44,7 @@ function steps = extract_steps(data)
         elseif state == 2
             if data(i+1) > data(i)
                 if data(i) > -threshold
-                    state = 0;
-                    start = i;
+                    state = -1;
                 else
                     state = 4;
                 end
@@ -51,8 +53,7 @@ function steps = extract_steps(data)
         elseif state == 3
             if data(i+1) < data(i)
                 if data(i) < threshold
-                    state = 0;
-                    start = i;
+                    state = -1;
                 else
                     state = 5;
                 end
