@@ -189,15 +189,20 @@ function postureAnalysis(subj_string)%, ~mat02)
         end
         
         %% Run Moving Average Filter
-        filter_window = 10;
-        %... insert code
-        
+        % Run a moving average filter 
+        filter_window = 5; 
+        b = 1/filter_window.*ones(1,filter_window);
+        headshoulder = filter(b, 1, headshoulder);
+        shouldercenterleft = filter(b, 1, shouldercenterleft);
+        shouldercenterright = filter(b, 1, shouldercenterright);
+        shoulderspine = filter(b, 1, shoulderspine);
+
         %% Save for Mat File Output
-        Subj_Name.headshoulder = headshoulder;
-        Subj_Name.shouldercenterleft = shouldercenterleft;
-        Subj_Name.shouldercenterright = shouldercenterright;
-        Subj_Name.shoulderspine = shoulderspine;
-        Subj_Name.spinehip = spinehip;
+        Subj_Name.headshoulder = abs(headshoulder);
+        Subj_Name.shouldercenterleft = abs(shouldercenterleft);
+        Subj_Name.shouldercenterright = abs(shouldercenterright);
+        Subj_Name.shoulderspine = abs(shoulderspine);
+        Subj_Name.spinehip = abs(spinehip);
         Subj_Name.timestamps = time_stamps;
         Subj_Name.segments = test_starts;
         

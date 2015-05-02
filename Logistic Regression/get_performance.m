@@ -1,3 +1,6 @@
+% Loops through each combinations of possible sets of training data
+% Theoretically should improve performance as more sets are included for training 
+
 function performance = get_performance(R,y)
     [num_trials,~] = size(R);
     performance = zeros(1,num_trials-1);
