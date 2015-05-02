@@ -22,15 +22,15 @@
 % suffix _c1. 
 % '013.1', '014.1', '015.1','016.1', '017.1', '020.1', '021.1', '022.1'
 % '013.2', '014.2', '015.2', '016.2', '017.2', '021.2', '022.2'
-subj_test_off = {}; 
-subj_test_on = {}; 
+subj_test_off = {'013.1', '014.1', '015.1','016.1', '017.1', '020.1', '021.1', '022.1', '113', '114', '110', '120', '121'}; 
+subj_test_on = {'013.2', '014.2', '015.2', '016.2', '017.2', '021.2', '022.2'}; 
 subj_string = [subj_test_off, subj_test_on]; 
 
 % Locations of subject .mat files generated via importSkeleton as well as
 % the CSV files from video (assumed to be same parent directory)
 mainDir = '/Users/adam2392/Documents/MATLAB/Neural_Interaction_Lab_MatlabForPD';
 matDir = '/01_Setup/Subj_Preprocessed_Data/'; 
-csvDir = '/04_Skeleton_Coords/'; 
+csvDir = '/04_Skeleton_Coords/Camera1_Walk'; 
 
 expName = 'Walk';
 segmentDir = '/Users/adam2392/Desktop';
@@ -46,7 +46,7 @@ for iii = 1:length(subj_string)
 
     % 9 Tests per .mat file
     ranges = markSegments(csv_files, expName, subj_string{iii}, segmentFile); 
-
+    
     sub = {strrep(subj_string{iii},'.','_')}
 
     load_string = strcat(mat_files, 'Subj_', sub{1})
@@ -58,6 +58,8 @@ for iii = 1:length(subj_string)
     ankle_diff = []; % ankle_left_x-ankle_right_x
     test_starts = []; % Indices for the start of tests for a sample. 
     time_stamps = [];
+    velocity = [];
+    head = [];
     time = {};
     
     for jjj = 1:size(ranges, 1)
@@ -66,10 +68,14 @@ for iii = 1:length(subj_string)
              ankle_diff = [ankle_diff; ...
                 str2double(placeholder_Name.Walk.ankle_left.x(ranges(jjj, 1):ranges(jjj, 2))) - ... 
                 str2double(placeholder_Name.Walk.ankle_right.x(ranges(jjj, 1):ranges(jjj, 2)))];
+            
+            head = [head; str2double(placeholder_Name.Walk.head.x(ranges(jjj, 1):ranges(jjj, 2)))];
         else   
             ankle_diff = [ankle_diff; ...
                 placeholder_Name.Walk.ankle_left.x(ranges(jjj, 1):ranges(jjj, 2)) - ... 
                 placeholder_Name.Walk.ankle_right.x(ranges(jjj, 1):ranges(jjj, 2))];
+            
+            head = [head; placeholder_Name.Walk.head.x(ranges(jjj, 1):ranges(jjj, 2))];
         end
         
         test_starts = [test_starts, length(ankle_diff)];
@@ -118,7 +124,7 @@ for iii = 1:length(subj_string)
     pks(ind_remove == 1) = []; 
     loc(ind_remove == 1) = []; 
     
-    sampling_rate = abs(timestamps(end) - timestamps(1))/length(timestamps);
+    sampling_rate = abs(time_stamps(end) - time_stamps(1))/length(time_stamps);
     cadence = diff(loc).*(1/sampling_rate);
 
     % Very crude estimates of mean peak amplitude and oscillating frequencies.
@@ -127,6 +133,11 @@ for iii = 1:length(subj_string)
     base_frequency = mean(cadence); stdev = std(cadence); 
     adj_frequency = mean(cadence(abs(cadence - base_frequency) < 2*stdev)); 
 
+    % Calculate velocity from head vector
+    for i=1:length(head)-1
+        velocity = [velocity; (head(i+1)-head(i))/(time_stamps(i+1) - time_stamps(i))];
+    end
+    
     Subj_Name.pks = pks;
     Subj_Name.loc = loc;
     Subj_Name.step = step;
@@ -136,6 +147,8 @@ for iii = 1:length(subj_string)
     Subj_Name.variance = variance;
     Subj_Name.frequency = adj_frequency; 
     Subj_Name.samples = test_starts; 
+    Subj_Name.velocity = velocity;
+%     Subj_Name.snr = snr;
     Subj_Name.timestamps = time_stamps;
 
     eval(['Subj_' sub{1} '_Step' '= Subj_Name;'])
