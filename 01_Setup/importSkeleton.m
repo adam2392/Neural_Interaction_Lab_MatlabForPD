@@ -9,10 +9,11 @@ function [ output_args ] = importSkeleton( subj_string )
 % '017.2', '020.1', '020.2', '021.1', '021.2', '022.1','022.2'}; 
 % or subj_string = {'021.1'}
  %% Initialize directory name and column vectors
-    
+    cam = 'Camera2';
+ 
     %This depends on where you save your image folders **Subject to Change**
     startDir = '/Users/adam2392/Desktop/';%'/Volumes/NIL_PASS/Camera1/'; %/Volumes/NIL_PASS/Camera1/001_August07/001_Color_Walk
-    mainDir = '/Analysis Folder/';%'/022.1_November18/Skeleton/';
+    mainDir = strcat('/Analysis Folder/', cam);%'/022.1_November18/Skeleton/';
     
     %Separate written Function imports all file names and directory name
     files = getAllFiles(fullfile(startDir,mainDir));
@@ -41,7 +42,7 @@ function [ output_args ] = importSkeleton( subj_string )
                 if(size(strfind(curr,subj_string{iii}),1)>0 && ...
                         size(strfind(curr,activity{ii}),1)>0 && ...
                         size(strfind(curr,'.csv'),1)>0 && ...
-                        size(strfind(curr,'c2'),1)>0)% && ...
+                        size(strfind(curr,'c1'),1)>0)% && ...
                        % strcmp(curr(indexofSkeleton+10:indexofSkeleton+17), 'Skeleton')) %this line added to account for ghost files... ask Adam
 
                     disp('File Found')
@@ -153,12 +154,12 @@ function [ output_args ] = importSkeleton( subj_string )
         sub = {strrep(subj_string{iii},'.','_')};
         eval(['Subj_' sub{1} '= Subj_Name;'])
 
-        if (exist('Subj_Preprocessed_Data','dir') ~= 7)
-            mkdir('Subj_Preprocessed_Data')
+        if (exist(strcat('Subj_Preprocessed_Data', '/', cam, '/') ,'dir') ~= 7)
+            mkdir(strcat('Subj_Preprocessed_Data/', cam, '/'));
         end
 
 
-        save(['./Subj_Preprocessed_Data/Subj_' sub{1}],['Subj_' sub{1}])
+        save([strcat('./Subj_Preprocessed_Data/', cam, '/', 'Subj_') sub{1}],['Subj_' sub{1}])
     end
 end
 

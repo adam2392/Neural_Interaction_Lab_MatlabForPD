@@ -86,8 +86,8 @@ function rangeMat = markSegments(skeletonDir, expName, subjNumber, segmentFile)
     end
     
     %get rid of 'start' and 'end' 
-    startTime = startTime(2:end);
-    endTime = endTime(2:end);
+    startTime = startTime(2:end)
+    endTime = endTime(2:end)
     
     %% Get the csv file of interest 
     % 1. try to get all csv files in folder as a list

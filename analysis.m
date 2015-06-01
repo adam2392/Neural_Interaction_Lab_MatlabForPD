@@ -37,7 +37,7 @@ nFFT = window;
 figure;imagesc(specTime,specFreq,10*log10(specPower));
 xlabel('Time (s)');ylabel('Frequency (Hz)'); title('Subject 14 Spectrogram (Pre)')
 axis xy;colorbar;colormap jet;ylim([0.2 2]);
-caxis([-40 0]);
+caxis([-40 0]); % can change color axis
 %you can change this value if you see mostly blue or red
 %you can also change it by clicking edit->colormap in the figure menu bar
 

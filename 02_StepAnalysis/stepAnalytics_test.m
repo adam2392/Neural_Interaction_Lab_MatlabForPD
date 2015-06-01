@@ -22,15 +22,15 @@
 % suffix _c1. 
 % '013.1', '014.1', '015.1','016.1', '017.1', '020.1', '021.1', '022.1'
 % '013.2', '014.2', '015.2', '016.2', '017.2', '021.2', '022.2'
-subj_test_off = {'013.1', '014.1', '015.1','016.1', '017.1', '020.1', '021.1', '022.1', '113', '114', '110', '120', '121'}; 
-subj_test_on = {'013.2', '014.2', '015.2', '016.2', '017.2', '021.2', '022.2'}; 
+subj_test_off = {'119', '120', '121', '117', '118','013.1', '014.1', '015.1','016.1', '017.1', '020.1', '021.1', '022.1', '113', '114', '115'}; 
+subj_test_on = {'017.2', '021.2', '022.2','013.2', '014.2', '015.2', '016.2'}; 
 subj_string = [subj_test_off, subj_test_on]; 
 
 % Locations of subject .mat files generated via importSkeleton as well as
 % the CSV files from video (assumed to be same parent directory)
 mainDir = '/Users/adam2392/Documents/MATLAB/Neural_Interaction_Lab_MatlabForPD';
-matDir = '/01_Setup/Subj_Preprocessed_Data/'; 
-csvDir = '/04_Skeleton_Coords/Camera1_Walk'; 
+matDir = '/01_Setup/Subj_Preprocessed_Data/Camera1/'; 
+csvDir = '/04_Skeleton_Coords/Camera1_Walk/'; 
 
 expName = 'Walk';
 segmentDir = '/Users/adam2392/Desktop';
@@ -104,6 +104,18 @@ for iii = 1:length(subj_string)
             time_stamps = [time_stamps, total];
         end
     end
+    
+    % this is the adjusted time stamps
+    timestamps = [];
+    time = time_stamps(1:test_starts(1));
+    timestamps = [timestamps, time];
+    for i=1:length(test_starts)-1
+        time = time_stamps(test_starts(i)+1:test_starts(i+1));
+        time = time - time(1);
+        time = time + timestamps(end);
+        
+        timestamps = [timestamps, time]; 
+    end
 
     % Run a moving average filter 
     filter_window = 10; 
@@ -138,6 +150,11 @@ for iii = 1:length(subj_string)
         velocity = [velocity; (head(i+1)-head(i))/(time_stamps(i+1) - time_stamps(i))];
     end
     
+    % get every second element to get rid of repeats
+    timestamps = timestamps(1:2:length(timestamps));
+    step = step(1:2:length(step));
+    samples = samples(1:2:length(samples));
+    
     Subj_Name.pks = pks;
     Subj_Name.loc = loc;
     Subj_Name.step = step;
@@ -150,7 +167,8 @@ for iii = 1:length(subj_string)
     Subj_Name.velocity = velocity;
 %     Subj_Name.snr = snr;
     Subj_Name.timestamps = time_stamps;
-
+    Subj_Name.adjtimestamps = timestamps;
+    
     eval(['Subj_' sub{1} '_Step' '= Subj_Name;'])
 
     if (exist('Processed_StepLength','dir') ~= 7)
@@ -166,14 +184,14 @@ clearvars -except Subj_*_Step
 
 figure(1); 
 hold on; 
-plot(Subj_021_1_Step.timestamps,Subj_021_1_Step.step); %plot time vs. step
+plot(Subj_021_1_Step.adjtimestamps,Subj_021_1_Step.step); %plot time vs. step
 % plot(Subj_021_1_Step.loc, Subj_021_1_Step.step(Subj_021_1_Step.loc), ...
 %     'd', 'MarkerFaceColor', 'g');
 yLims = get(gca, 'YLim');
 samples = Subj_021_1_Step.samples;
 max = max(Subj_021_1_Step.step);
 for iii=1:length(Subj_021_1_Step.samples)
-    timemark = Subj_021_1_Step.timestamps(samples(iii));
+    timemark = Subj_021_1_Step.adjtimestamps(samples(iii));
     line([timemark timemark], [-0.8 0.8], 'Color', 'r')
 %     line(Subj_021_1_Step.timestamps(samples(iii))*ones(1, 2), yLims, 'Color', 'r'); 
 end
@@ -211,6 +229,29 @@ title('Subject 20-ON');
 % %HOW TO INTERPOLATE THE DATA?
 
 
+% logstep = []
+% for i=1:length(segments)
+%     time = Subj_021_1_Step.timestamps(loc(i):loc(i+1));
+%     steps = transpose(Subj_021_1_Step.step(loc(i):loc(i+1))) + abs(min(Subj_021_1_Step.step(loc(i):loc(i+1))));
+%     
+%     [qpre, p] = fit_logistic(time, steps);
+%     logstep = [logstep, qpre];
+% end
 
 
+% timestamps = [];
+% time = Subj_021_1_Step.timestamps(1:segments(1));
+% timestamps = [timestamps, time];
+% for i=1:length(segments)
+%     if i<length(segments)
+%         time = Subj_021_1_Step.timestamps(segments(i)+1:segments(i+1));
+%         time = time - time(1);
+%         time = time + timestamps(end);
+%     else
+%         time = Subj_021_1_Step.timestamps(segments(i)+1:end);
+%         time = time - time(1);
+%         time = time + timestamps(end);
+%     end
+%     timestamps = [timestamps, time];
+% end
 
