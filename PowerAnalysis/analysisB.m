@@ -1,10 +1,8 @@
 clear all; close all; clc;
 
 %% Set up of all subjects, we want to go through
-subj_test_off = {};
-
-% {'120', '119', '121', '117', '118','013.1', '014.1', '015.1','016.1', '017.1', '020.1', '021.1', '022.1', '113', '114', '115'}; 
-subj_test_on = {'013.2', '014.2', '015.2', '016.2', '017.2', '021.2', '022.2'}; 
+subj_test_off = {'120', '119', '121', '117', '118','013.1', '014.1', '015.1','016.1', '017.1', '020.1', '021.1', '022.1', '113'};%,'115'}; 
+subj_test_on = {};%'013.2', '014.2', '015.2', '016.2', '017.2', '021.2', '022.2'}; 
 subj_string = [subj_test_off, subj_test_on]; 
 
 % Locations of subject .mat files generated via importSkeleton as well as
@@ -31,11 +29,11 @@ for iii = 1:length(subj_string)
     
     eval(['placeholder_Name =' 'Subj_' sub{1} '_Step' ';'])
     
-    deltaUniform = fixSampling(load_string, sub{1})
+    [deltaUniform, fs] = fixSampling(load_string, sub{1});
     
 %     load Parkinsons_Data/From_Adam/Subj_022_1_fixed.mat
 
-    fs=30 %WHAT SHOULD THIS BE? change within fixsampling
+%     fs=30 %WHAT SHOULD THIS BE? change within fixsampling
     
     % Spectrotemporal Pursuit Algorithm
     % Analysis on Power?
@@ -51,13 +49,22 @@ for iii = 1:length(subj_string)
     colorbar;colormap jet;ylim([0.2 2]);caxis([-40 -20]);
     Power=20*log10(abs(xEst));
     
+    Subj_Name.Power = Power;
+    Subj_Name.freq = freq;
+    Subj_Name.time = tWin;
+    
+    eval(['Subj_' sub{1} '_fixed_a' num2str(alpha) '_Power' '= Subj_Name;'])
+    
     if (exist('Processed_Spec','dir') ~= 7)
         mkdir('Processed_Spec')
     end
     
     % Save the power spectrum to analyze quantitatively
-    powerFile = strcat('./Processed_Spec/Subj_', sub{1}, '_fixed_a', num2str(alpha), '_Power');
-    save(powerFile, 'Power');
+%     powerFile = strcat('./Processed_Spec/Subj_', sub{1}, '_fixed_a', num2str(alpha), '_Power');
+%     save(powerFile, 'Power');
+    
+    save(['./Processed_Spec/Subj_' sub{1} '_fixed_a' num2str(alpha) '_Power'],['Subj_'  sub{1} '_fixed_a' num2str(alpha) '_Power'])
+        
     
     % Save the spectrogram image
     imageName = strcat('/Users/adam2392/Documents/MATLAB/Neural_Interaction_Lab_MatlabForPD/PowerAnalysis', '/Processed_Spec/Subj_', sub{1}, '_RobustSpec_a' , num2str(alpha)); % c4020

@@ -41,29 +41,66 @@
         end
     end
     
-    average50 = [];
-    variance50 = [];
+    subjects = {};
+    time_allAvge = [];
+    time_allVar = [];
+    freq_allAvge = [];
+    freq_allVar = [];
     % Analyze each power spectrum and loop through ALPHA=50
     for i=1:length(powerName50)
         % parse out the subject number
         strfind(powerName50{i}, '_fixed');
-        subjNum = powerName50{i}(6:strfind(powerName50{i}, '_fixed')-1)
+        subjNum = powerName50{i}(6:strfind(powerName50{i}, '_fixed')-1);
 
         % load up this specific power mat file
         file = strcat(mainDir, powerDir, powerName50{i});
         subj = load(file);
         
-        average50 = [average50, mean(subj.Power)];
-        variance50 = [variance50, var(subj.Power)];
+        field = char(fieldnames(subj)); % the field name
+        power = subj.(field).Power;     % store the power matrix
+        time = [0, subj.(field).time];  % store the time window vector
+        freq = subj.(field).freq;       % store the frequency vector (0 - 2 Hz)
         
-        temp_avge = mean(mean(subj.Power));
-        temp_var = var(var(subj.Power));
+        %%use the power as weights on the time and freq. scale to find
+        %%avge, variance
+        % average across all columns
+        temp_timeavge = mean(power);
+        temp_timevar = var(power);
         
-        Subj_Name.average = mean(subj.Power);
-        Subj_Name.variance = var(subj.Power);
-        Subj_Name.allAvge = temp_avge;
-        Subj_Name.allVar = temp_var;
-
+        %average across all rows
+        temp_freqavge = mean(power, 2);
+        temp_freqvar = var(power, 0, 2);
+        
+        % weighted average sum of time weights / sum of the power averages
+        % along time axis
+        
+        minimum = min(min(power));  % this is the minimum power from all samples (to be normalized against)
+        
+        uppersumtime = (temp_timeavge - minimum) .* time;                   % upper sum of weighted avge
+        uppersumfreq = (temp_freqavge - minimum) .* transpose(freq);        % upper sum
+        
+        % carry out weighted avge
+        timeavge_weighted = sum(uppersumtime) / sum((temp_timeavge - minimum));       
+        freqavge_weighted = sum(uppersumfreq) / sum((temp_freqavge - minimum));
+       
+        %Plotting to show where the most weighted freq was
+%         figure(i);
+%         plot(freq, temp_freqavge)               
+%         hax = ylim
+%         SP=freqavge; %your point goes here 
+%         line([SP SP], [hax(1) hax(2)], 'Color', 'r')
+  
+        % store all the time window average/variances
+        Subj_Name.time_average = mean(power);       % time vector averages
+        Subj_Name.time_variance = var(power);       % time vector variances
+        Subj_Name.time_allAvge = timeavge_weighted; % overall weighted time average
+        Subj_Name.time_allVar = var(var(power)); %overall time variance      
+        % store all the frequency window average/variances
+        Subj_Name.freq_average = mean(power, 2);
+        Subj_Name.freq_variance = var(power, 0, 2);
+        Subj_Name.freq_allAvge = freqavge_weighted;
+        Subj_Name.freq_allVar = var(var(power, 0, 2));
+        
         eval(['Subj_' subjNum '_PowerAnalysis' '= Subj_Name;'])
 
         if (exist('Processed_Power','dir') ~= 7)
@@ -71,16 +108,26 @@
         end
 
         save(['./Processed_Power/Subj_' subjNum '_PowerAnalysis'],['Subj_' subjNum '_PowerAnalysis'])
-    end
-    
-    average100 = [];
-    variance100 = [];
-    % Analyze each power spectrum and loop through ALPHA=100
-    for i=1:length(powerName100)
-        file = strcat(mainDir, powerDir, powerName100{i});
-        subj = load(file);
         
-        average100 = [average100, mean(subj.Power)];
-        variance100 = [variance100, var(subj.Power)];
-    end 
+        % to create output table
+        subjects{i} = char(subjNum);
+        time_allAvge = [time_allAvge; Subj_Name.time_allAvge];
+        time_allVar = [time_allVar; Subj_Name.time_allVar];
+        freq_allAvge = [freq_allAvge; Subj_Name.freq_allAvge];
+        freq_allVar = [freq_allVar; Subj_Name.freq_allVar];
+    end
+
+    T = table( freq_allAvge, freq_allVar,time_allAvge, time_allVar, 'RowNames', subjects)
+
+    
+%     average100 = [];
+%     variance100 = [];
+%     % Analyze each power spectrum and loop through ALPHA=100
+%     for i=1:length(powerName100)
+%         file = strcat(mainDir, powerDir, powerName100{i});
+%         subj = load(file);
+%         
+%         average100 = [average100, mean(power)];
+%         variance100 = [variance100, var(power)];
+%     end 
         
