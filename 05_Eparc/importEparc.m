@@ -47,13 +47,14 @@ fclose(fileID);
 % script.
 
 %% Allocate imported array to column variable names
-Trial = dataArray{:, 1};
-StepWidthcm = dataArray{:, 2};
-StepLengthcm = dataArray{:, 3};
-Speedcms = dataArray{:, 4};
-StepLengthSymmetry = dataArray{:, 5};
-Height = dataArray{:, 6};
-DateofBirth = dataArray{:, 7};
+Subject = dataArray{:, 1};
+Trial = dataArray{:, 2};
+StepWidthcm = dataArray{:, 3};
+StepLengthcm = dataArray{:, 4};
+Speedcms = dataArray{:, 5};
+StepLengthSymmetry = dataArray{:, 6};
+Height = dataArray{:, 7};
+DateofBirth = dataArray{:, 8};
 
 
 %% Clear temporary variables
@@ -62,13 +63,14 @@ clearvars filename delimiter startRow formatSpec fileID dataArray ans;
 %% Convert to mat file and saving   
     
 % save all eparc data into mat file, 
-Subj_Name.trial = Trial;
+% Subj_Name.subject = Subject;
+% Subj_Name.trial = Trial;
 Subj_Name.stepwidth = StepWidthcm;
 Subj_Name.steplength = StepLengthcm;
 Subj_Name.speed = Speedcms;
 Subj_Name.stepsymmetry = StepLengthSymmetry;
-Subj_Name.height = Height;
-Subj_Name.dob = DateofBirth;
+% Subj_Name.height = Height;
+% Subj_Name.dob = DateofBirth;
 
 sub = subjnum;
 

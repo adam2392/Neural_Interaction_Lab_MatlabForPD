@@ -13,7 +13,7 @@ function [deltaUniform, fs] = fixSampling(loadString, subjNum)
     eval(['placeholder_Name =' 'Subj_' subjNum '_Step' ';'])
     
     delta = placeholder_Name.step;      %delta is each person's step data
-    time_stamp = placeholder_Name.adjtimestamps;    %adj Time Stamps in ms
+    time_stamp = placeholder_Name.time;    %adj Time Stamps in ms
     
     % convert time stamps to seconds
     for iii=1:length(time_stamp)
@@ -24,7 +24,7 @@ function [deltaUniform, fs] = fixSampling(loadString, subjNum)
     time = time-time(1); %start time at 0 seconds
 
     fs = 100; %new sampling rate [Hz]
-    timeUniform =[ 0:(1/fs):time(end)]; %time vector sampled at fs
+    timeUniform =[0:(1/fs):time(end)]; %time vector sampled at fs
 
     %remove time points that are not strictly monotonic
     delta(diff(time)==0)=[]; 

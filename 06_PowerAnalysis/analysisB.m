@@ -1,9 +1,17 @@
 clear all; close all; clc;
 
 %% Set up of all subjects, we want to go through
-subj_test_off = {'120', '119', '121', '117', '118','013.1', '014.1', '015.1','016.1', '017.1', '020.1', '021.1', '022.1', '113'};%,'115'}; 
+subj_test_off = {'001', '002', '003', '120', '119'}; 
 subj_test_on = {};%'013.2', '014.2', '015.2', '016.2', '017.2', '021.2', '022.2'}; 
-subj_string = [subj_test_off, subj_test_on]; 
+subj_string = {%'001', '002',
+    '003','005','006','007','008','009','010','011.1','011.2',...
+    '012.1','012.2','013.1','013.2','014.1','014.2','015.1','015.2','016.1',...
+    '016.2','017.1','017.2','018','019','020.1','020.2','021.1','021.2','022.1','022.2',...
+    '103', '104','105','106','107','108','109','110','112','113','114',...
+    '115','117','118','119','120','121'};
+%[subj_test_off, subj_test_on]; 
+
+
 
 % Locations of subject .mat files generated via importSkeleton as well as
 % the CSV files from video (assumed to be same parent directory)
@@ -42,7 +50,8 @@ for iii = 1:length(subj_string)
 
     % use specPursuit.m to perform robust spectrotemporal decomposition
     [xEst,freq,tWin,iter] = specPursuit(deltaUniform,fs,window,alpha);
-
+    
+    % draw up the spectrogram figure
     figure; imagesc(tWin,freq,20*log10(abs(xEst)));axis xy;colorbar;
     
     ylabel('Frequency (Hz)');xlabel('Time (s)');
@@ -68,7 +77,7 @@ for iii = 1:length(subj_string)
     
     % Save the spectrogram image
     imageName = strcat('/Users/adam2392/Documents/MATLAB/Neural_Interaction_Lab_MatlabForPD/PowerAnalysis', '/Processed_Spec/Subj_', sub{1}, '_RobustSpec_a' , num2str(alpha)); % c4020
-    saveas(gcf, imageName, 'png')
+%     saveas(gcf, imageName, 'png')
     
     close all;
 end
