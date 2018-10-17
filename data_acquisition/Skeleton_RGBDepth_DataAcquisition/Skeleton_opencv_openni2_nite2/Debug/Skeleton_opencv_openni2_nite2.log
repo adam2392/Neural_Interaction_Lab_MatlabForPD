@@ -1,0 +1,44 @@
+﻿Build started 2013/10/31 21:50:18.
+     1>Project "D:\user_E\Kinect\skeleton_christineLydia - 副本\Skeleton_opencv_openni2_nite2\Skeleton_opencv_openni2_nite2.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Touching "Debug\Skeleton_opencv_openni2_nite2.unsuccessfulbuild".
+       ClCompile:
+         C:\Program Files\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /IC:\OpenCV2.4.5\opencv\build\include\opencv /I\OpenCV2.4.5\opencv\build\include /I"C:\Program Files\OpenNI2\Include\\" /I"C:\Program Files\PrimeSense\NiTE2\Include\\" /IC:\Users\Lester\Dropbox\L_Skeleton_Project\OpenNI2\Source\Tools\NiViewer /ZI /nologo /W3 /WX- /Od /Oy- /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Skeleton_opencv_openni2_nite2.cpp
+         Skeleton_opencv_openni2_nite2.cpp
+     1>c:\program files\microsoft sdks\kinect\v1.7\inc\nuisensor.h(46): error C2146: 语法错误: 缺少“;”(在标识符“INuiAudioBeam”的前面)
+     1>c:\program files\microsoft sdks\kinect\v1.7\inc\nuisensor.h(46): error C4430: 缺少类型说明符 - 假定为 int。注意: C++ 不支持默认 int
+     1>c:\program files\microsoft sdks\kinect\v1.7\inc\nuisensor.h(46): error C2146: 语法错误: 缺少“;”(在标识符“INuiAudioBeam”的前面)
+     1>c:\program files\microsoft sdks\kinect\v1.7\inc\nuisensor.h(46): error C4430: 缺少类型说明符 - 假定为 int。注意: C++ 不支持默认 int
+     1>c:\program files\microsoft sdks\kinect\v1.7\inc\nuisensor.h(46): error C4430: 缺少类型说明符 - 假定为 int。注意: C++ 不支持默认 int
+     1>c:\program files\microsoft sdks\kinect\v1.7\inc\nuisensor.h(46): error C2086: “int INuiAudioBeam”: 重定义
+                 c:\program files\microsoft sdks\kinect\v1.7\inc\nuisensor.h(46) : 参见“INuiAudioBeam”的声明
+     1>c:\program files\microsoft sdks\kinect\v1.7\inc\nuisensor.h(52): error C2146: 语法错误: 缺少“;”(在标识符“INuiFrameTexture”的前面)
+     1>c:\program files\microsoft sdks\kinect\v1.7\inc\nuisensor.h(52): warning C4091: “”: 没有声明变量时忽略“interface”的左侧
+     1>c:\program files\microsoft sdks\kinect\v1.7\inc\nuisensor.h(58): error C2146: 语法错误: 缺少“;”(在标识符“INuiCoordinateMapperParametersChangedEvent”的前面)
+     1>c:\program files\microsoft sdks\kinect\v1.7\inc\nuisensor.h(58): warning C4091: “”: 没有声明变量时忽略“interface”的左侧
+     1>c:\program files\microsoft sdks\kinect\v1.7\inc\nuisensor.h(64): error C2146: 语法错误: 缺少“;”(在标识符“INuiCoordinateMapper”的前面)
+     1>c:\program files\microsoft sdks\kinect\v1.7\inc\nuisensor.h(64): warning C4091: “”: 没有声明变量时忽略“interface”的左侧
+     1>c:\program files\microsoft sdks\kinect\v1.7\inc\nuisensor.h(70): error C2146: 语法错误: 缺少“;”(在标识符“INuiColorCameraSettings”的前面)
+     1>c:\program files\microsoft sdks\kinect\v1.7\inc\nuisensor.h(70): warning C4091: “”: 没有声明变量时忽略“interface”的左侧
+     1>c:\program files\microsoft sdks\kinect\v1.7\inc\nuisensor.h(76): error C2146: 语法错误: 缺少“;”(在标识符“INuiSensor”的前面)
+     1>c:\program files\microsoft sdks\kinect\v1.7\inc\nuisensor.h(76): warning C4091: “”: 没有声明变量时忽略“interface”的左侧
+     1>c:\program files\microsoft sdks\kinect\v1.7\inc\nuisensor.h(543): error C2371: “INuiFrameTexture”: 重定义；不同的基类型
+                 c:\program files\microsoft sdks\kinect\v1.7\inc\nuisensor.h(52) : 参见“INuiFrameTexture”的声明
+     1>c:\program files\microsoft sdks\kinect\v1.7\inc\nuisensor.h(666): error C2371: “INuiCoordinateMapperParametersChangedEvent”: 重定义；不同的基类型
+                 c:\program files\microsoft sdks\kinect\v1.7\inc\nuisensor.h(58) : 参见“INuiCoordinateMapperParametersChangedEvent”的声明
+     1>c:\program files\microsoft sdks\kinect\v1.7\inc\nuisensor.h(743): error C2371: “INuiCoordinateMapper”: 重定义；不同的基类型
+                 c:\program files\microsoft sdks\kinect\v1.7\inc\nuisensor.h(64) : 参见“INuiCoordinateMapper”的声明
+     1>c:\program files\microsoft sdks\kinect\v1.7\inc\nuisensor.h(980): error C2371: “INuiColorCameraSettings”: 重定义；不同的基类型
+                 c:\program files\microsoft sdks\kinect\v1.7\inc\nuisensor.h(70) : 参见“INuiColorCameraSettings”的声明
+     1>c:\program files\microsoft sdks\kinect\v1.7\inc\nuisensor.h(1537): error C2371: “INuiSensor”: 重定义；不同的基类型
+                 c:\program files\microsoft sdks\kinect\v1.7\inc\nuisensor.h(76) : 参见“INuiSensor”的声明
+     1>c:\program files\microsoft sdks\kinect\v1.7\inc\nuisensor.h(1625): error C2061: 语法错误: 标识符“INuiAudioBeam”
+     1>c:\program files\microsoft sdks\kinect\v1.7\inc\nuisensor.h(2052): error C2065: “ppDmo”: 未声明的标识符
+     1>c:\program files\microsoft sdks\kinect\v1.7\inc\nuisensor.h(2052): warning C4229: 使用了记时错误: 忽略数据上的修饰符
+     1>c:\program files\microsoft sdks\kinect\v1.7\inc\nuisensor.h(2052): error C2491: “NuiGetAudioSource”: 不允许 dllimport 数据 的定义
+     1>c:\program files\microsoft sdks\kinect\v1.7\inc\nuisensor.h(2052): fatal error C1903: 无法从以前的错误中恢复；正在停止编译
+     1>Done Building Project "D:\user_E\Kinect\skeleton_christineLydia - 副本\Skeleton_opencv_openni2_nite2\Skeleton_opencv_openni2_nite2.vcxproj" (build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:13.55

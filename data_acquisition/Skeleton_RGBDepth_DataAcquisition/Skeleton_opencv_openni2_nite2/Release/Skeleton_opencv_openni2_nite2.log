@@ -1,0 +1,28 @@
+﻿Build started 7/13/2014 8:44:57 PM.
+     1>Project "C:\Users\Adam\Desktop\complete_color_skeleton_C++_AdamLi\Skeleton_opencv_openni2_nite2\Skeleton_opencv_openni2_nite2.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Release\Skeleton_opencv_openni2_nite2.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /IC:\OpenCV2.4.5\opencv\build\include /IC:\OpenCV2.4.5\opencv\build\include\opencv /I"C:\Program Files (x86)\OpenNI2\Include\\" /I"C:\Program Files (x86)\PrimeSense\NiTE2\Include\\" /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Skeleton_opencv_openni2_nite2.cpp
+         Skeleton_opencv_openni2_nite2.cpp
+     1>Skeleton_opencv_openni2_nite2.cpp(61): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(371) : see declaration of 'sprintf'
+     1>Skeleton_opencv_openni2_nite2.cpp(184): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(371) : see declaration of 'sprintf'
+     1>Skeleton_opencv_openni2_nite2.cpp(185): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(371) : see declaration of 'sprintf'
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Adam\Desktop\complete_color_skeleton_C++_AdamLi\Release\Skeleton_opencv_openni2_nite2.exe" /NOLOGO /LIBPATH:C:\OpenCV2.4.5\opencv\build\x86\vc10\lib /LIBPATH:"C:\Program Files (x86)\OpenNI2\Lib\\" /LIBPATH:"C:\Program Files (x86)\PrimeSense\NiTE2\Lib\\" Kinect10.lib opencv_core245.lib opencv_highgui245.lib opencv_ml245.lib opencv_imgproc245.lib opencv_video245.lib opencv_features2d245.lib opencv_calib3d245.lib opencv_objdetect245.lib opencv_contrib245.lib opencv_legacy245.lib opencv_flann245.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Release\Skeleton_opencv_openni2_nite2.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\Adam\Desktop\complete_color_skeleton_C++_AdamLi\Release\Skeleton_opencv_openni2_nite2.pdb" /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Adam\Desktop\complete_color_skeleton_C++_AdamLi\Release\Skeleton_opencv_openni2_nite2.lib" /MACHINE:X86 Release\Skeleton_opencv_openni2_nite2.obj
+         Generating code
+         Finished generating code
+         Skeleton_opencv_openni2_nite2.vcxproj -> C:\Users\Adam\Desktop\complete_color_skeleton_C++_AdamLi\Release\Skeleton_opencv_openni2_nite2.exe
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"C:\Users\Adam\Desktop\complete_color_skeleton_C++_AdamLi\Release\Skeleton_opencv_openni2_nite2.exe;#1" /manifest Release\Skeleton_opencv_openni2_nite2.exe.intermediate.manifest
+       FinalizeBuildStatus:
+         Deleting file "Release\Skeleton_opencv_openni2_nite2.unsuccessfulbuild".
+         Touching "Release\Skeleton_opencv_openni2_nite2.lastbuildstate".
+     1>Done Building Project "C:\Users\Adam\Desktop\complete_color_skeleton_C++_AdamLi\Skeleton_opencv_openni2_nite2\Skeleton_opencv_openni2_nite2.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:07.56
